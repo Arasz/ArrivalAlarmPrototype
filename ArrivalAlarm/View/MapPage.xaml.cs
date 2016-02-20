@@ -1,4 +1,5 @@
 ﻿using ArrivalAlarm.Common;
+using ArrivalAlarm.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,10 +24,13 @@ namespace ArrivalAlarm.View
     /// </summary>
     public sealed partial class MapPage : BindablePage
     {
+        private MapViewModel _viewModel;  
 
         public MapPage()
         {
             InitializeComponent();
+
+            _viewModel = DataContext as MapViewModel;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -34,5 +38,10 @@ namespace ArrivalAlarm.View
             base.OnNavigatedTo(e);
         }
 
+        async private void mapControl_CenterChanged(Windows.UI.Xaml.Controls.Maps.MapControl sender, object args)
+        {
+            /// TODO: Re factor this ( is there any need for binding ?)
+            await sender.TrySetViewAsync(_viewModel.UserPosition, _viewModel.ZoomLevel, 0, 0, Windows.UI.Xaml.Controls.Maps.MapAnimationKind.Bow);
+        }
     }
 }

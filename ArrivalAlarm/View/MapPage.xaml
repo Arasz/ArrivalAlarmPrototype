@@ -6,11 +6,36 @@
     xmlns:local="using:ArrivalAlarm.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:map="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Map}">
 
+    <common:BindablePage.Resources>
+        <ResourceDictionary>
+            <x:String x:Key="selectionString">Select alarm location:</x:String>
+        </ResourceDictionary>
+    </common:BindablePage.Resources>
+    
     <Grid>
-        <TextBlock Text="{Binding MyProperty}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <TextBlock Text="{StaticResource selectionString}" Margin="5,15,5,5"
+                       Style="{StaticResource  GroupHeaderTextBlockStyle}"/>
+            <ComboBox  Margin="5, 5"/>
+        </StackPanel>
+
+         
+        <map:MapControl  Grid.Row="1" x:Name="mapControl" Margin="5,5"
+                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                         Center="{Binding UserPosition}"
+                         ZoomLevel="{Binding ZoomLevel}"
+                         CenterChanged="mapControl_CenterChanged"
+                         />
+        
     </Grid>
 </common:BindablePage>

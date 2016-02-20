@@ -54,7 +54,7 @@ namespace ArrivalAlarm.ViewModel
         #region INavigable
         public void OnNavigatedTo(object parameter)
         {
-
+           //Common.Logger.CreateLoggerAsync();
         }
 
         public void OnNavigatedFrom(object parameter)
