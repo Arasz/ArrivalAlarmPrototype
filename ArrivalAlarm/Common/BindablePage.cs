@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Phone.UI.Input;
+﻿using Windows.Phone.UI.Input;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 namespace ArrivalAlarm.Common
 {
     /// <summary>
-    /// Page implementation with navigation event handlers consistent with MVVM pattern 
+    /// Page implementation with navigation event handlers consistent with MVVM pattern
     /// </summary>
-    public class BindablePage: Page
+    public class BindablePage : Page
     {
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.

@@ -1,10 +1,14 @@
+using ArrivalAlarm.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Windows.Input;
 using GalaSoft.MvvmLight.Views;
-using GalaSoft.MvvmLight.Ioc;
-using System;
 using Microsoft.Practices.ServiceLocation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Windows.Input;
+using Windows.Devices.Geolocation;
 
 namespace ArrivalAlarm.ViewModel
 {
@@ -22,7 +26,28 @@ namespace ArrivalAlarm.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, INavigable
     {
-        INavigationService _navigationService;
+        private INavigationService _navigationService;
+
+        private readonly ObservableCollection<AlarmModel> _alarmsCollection = new ObservableCollection<AlarmModel>()
+        {
+            new AlarmModel(new AlarmLocation("Poznan", new BasicGeoposition()))
+            {
+                Label = "Alarm praca",
+                ActiveDays = new HashSet<DayOfWeek>() {DayOfWeek.Monday, DayOfWeek.Tuesday},
+                IsActive = true,
+                IsCyclic = true,
+            },
+
+            new AlarmModel(new AlarmLocation("Wroclaw", new BasicGeoposition()))
+            {
+                Label = "Sex",
+                ActiveDays = new HashSet<DayOfWeek>() {DayOfWeek.Friday, DayOfWeek.Wednesday},
+                IsActive = true,
+                IsCyclic = true,
+            },
+        };
+
+        public INotifyCollectionChanged AlarmsCollection => _alarmsCollection;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -52,20 +77,21 @@ namespace ArrivalAlarm.ViewModel
         }
 
         #region INavigable
+
         public void OnNavigatedTo(object parameter)
         {
-           //Common.Logger.CreateLoggerAsync();
+            //Common.Logger.CreateLoggerAsync();
         }
 
         public void OnNavigatedFrom(object parameter)
         {
-
         }
 
         public void GoBack()
         {
             _navigationService.GoBack();
         }
-        #endregion
+
+        #endregion INavigable
     }
 }

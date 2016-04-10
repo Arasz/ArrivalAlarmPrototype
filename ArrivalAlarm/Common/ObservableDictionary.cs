@@ -24,6 +24,7 @@ namespace ArrivalAlarm.Common
         }
 
         private Dictionary<string, object> _dictionary = new Dictionary<string, object>();
+
         public event MapChangedEventHandler<string, object> MapChanged;
 
         private void InvokeMapChanged(CollectionChange change, string key)

@@ -4,7 +4,7 @@
       <vm:ViewModelLocator xmlns:vm="clr-namespace:ArrivalAlarm"
                            x:Key="Locator" />
   </Application.Resources>
-  
+
   In the View:
   DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 
@@ -12,10 +12,9 @@
   See http://www.galasoft.ch/mvvm
 */
 
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
 using GalaSoft.MvvmLight.Views;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ArrivalAlarm.ViewModel
 {
@@ -41,7 +40,7 @@ namespace ArrivalAlarm.ViewModel
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
         public MapViewModel Map => ServiceLocator.Current.GetInstance<MapViewModel>();
-        
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
@@ -50,7 +49,7 @@ namespace ArrivalAlarm.ViewModel
         /// <summary>
         /// Creates and configures instance of navigation service
         /// </summary>
-        void ConfigureNavigationService()
+        private void ConfigureNavigationService()
         {
             // Create navigation service object
             NavigationService navigationService = new NavigationService();
@@ -60,7 +59,7 @@ namespace ArrivalAlarm.ViewModel
             navigationService.Configure(nameof(View.MapPage), typeof(View.MapPage));
 
             // Register navigation service (object)
-            SimpleIoc.Default.Register<INavigationService>(() => navigationService); 
+            SimpleIoc.Default.Register<INavigationService>(() => navigationService);
         }
     }
 }
