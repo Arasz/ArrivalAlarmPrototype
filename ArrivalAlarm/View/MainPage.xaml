@@ -52,4 +52,10 @@
             </StackPanel>
         </Grid>
     </Grid>
+
+    <common:BindablePage.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="Add alarm" Icon="Add" />
+        </CommandBar>
+    </common:BindablePage.BottomAppBar>
 </common:BindablePage>

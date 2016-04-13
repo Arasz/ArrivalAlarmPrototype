@@ -104,6 +104,9 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AlarmItemConfigurationPage.xaml.cs">
+      <DependentUpon>AlarmItemConfigurationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AlarmItemControl.xaml.cs">
       <DependentUpon>AlarmItemControl.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\AlarmItemConfigurationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AlarmItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
