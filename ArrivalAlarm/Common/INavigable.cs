@@ -2,10 +2,10 @@
 {
     internal interface INavigable
     {
-        void OnNavigatedTo(object parameter);
+        void GoBack();
 
         void OnNavigatedFrom(object parameter);
 
-        void GoBack();
+        void OnNavigatedTo(object parameter);
     }
 }

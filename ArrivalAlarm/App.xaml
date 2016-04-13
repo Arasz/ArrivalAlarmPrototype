@@ -3,10 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              d1p1:Ignorable="d"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:ArrivalAlarm.ViewModel">
+             xmlns:vm="using:ArrivalAlarm.ViewModel"
+             xmlns:common="using:ArrivalAlarm.Common">
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+            <common:IOCConfigurator x:Key="IocConfigurator" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

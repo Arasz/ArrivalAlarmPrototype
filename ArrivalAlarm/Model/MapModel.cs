@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Devices.Geolocation.Geofencing;
 using Windows.Services.Maps;
 
 namespace ArrivalAlarm.Model
@@ -9,21 +10,32 @@ namespace ArrivalAlarm.Model
     public class MapModel
     {
         /// <summary>
-        /// Object which contains all logic responsible for localization
+        /// Object which contains all logic responsible for localization 
         /// </summary>
-        private Geolocator _geolocator;
+        private readonly Geolocator _geolocator;
+
+        private readonly TimeSpan _getPositionTimeout = TimeSpan.FromSeconds(10);
+        private Geocircle _geocircle;
+        private TimeSpan _locationFetchInterval;
 
         /// <summary>
-        /// Distance after which position changed event will be raised
+        /// Distance after which position changed event will be raised 
         /// </summary>
         private double _movementThreshold = 500;
 
         /// <summary>
-        /// Minimum time interval between location updates in milliseconds
+        /// Minimum time interval between location updates in milliseconds 
         /// </summary>
         private uint _reportInterval = 1000;
 
-        private TimeSpan _getPositionTimeout = TimeSpan.FromSeconds(10);
+        /// <summary>
+        /// Time after which location data will be discarded 
+        /// </summary>
+        public TimeSpan LocationFetchInterval
+        {
+            get { return _locationFetchInterval; }
+            private set { _locationFetchInterval = value; }
+        }
 
         public MapModel()
         {
@@ -36,49 +48,28 @@ namespace ArrivalAlarm.Model
 
             _geolocator.PositionChanged += PositionChangedHandler;
             _geolocator.StatusChanged += StatusChangedHandler;
+
+            _geocircle = new Geocircle(new BasicGeoposition(), 4d);
+            Geofence geofence = new Geofence("1", _geocircle, MonitoredGeofenceStates.Entered, true);
         }
 
         /// <summary>
-        ///
         /// </summary>
-        /// <param name="locationFetchInterval">Time after which location data will be discarded</param>
+        /// <param name="locationFetchInterval"> Time after which location data will be discarded </param>
         public MapModel(TimeSpan locationFetchInterval) : this()
         {
             _locationFetchInterval = locationFetchInterval;
         }
 
-        private TimeSpan _locationFetchInterval;
-
         /// <summary>
-        /// Time after which location data will be discarded
+        /// Finds location on map given location name 
         /// </summary>
-        public TimeSpan LocationFetchInterval
-        {
-            get { return _locationFetchInterval; }
-            private set { _locationFetchInterval = value; }
-        }
-
-        /// <summary>
-        /// Gets actual position on map from GPS
-        /// </summary>
-        /// <returns>Actual position on map</returns>
-        public async Task<Geoposition> GetActualLocationAsync()
-        {
-            if (_locationFetchInterval != null)
-                return await _geolocator.GetGeopositionAsync(_locationFetchInterval, _getPositionTimeout);
-            else
-                return await _geolocator.GetGeopositionAsync();
-        }
-
-        /// <summary>
-        /// Finds location on map given location name
-        /// </summary>
-        /// <param name="locationName">Searched location name</param>
-        /// <returns>List of locations matched with given location name</returns>
+        /// <param name="locationName"> Searched location name </param>
+        /// <returns> List of locations matched with given location name </returns>
         async public Task<IReadOnlyList<MapLocation>> FindLocationAsync(string locationName)
         {
-            // Give as a hint actual user location because we don't have any informations
-            // about searched location
+            // Give as a hint actual user location because we don't have any informations about
+            // searched location
             var hint = await GetActualLocationAsync();
 
             // Find given location
@@ -116,13 +107,25 @@ namespace ArrivalAlarm.Model
             return locationsList;
         }
 
-        private void StatusChangedHandler(Geolocator sender, StatusChangedEventArgs args)
+        /// <summary>
+        /// Gets actual position on map from GPS 
+        /// </summary>
+        /// <returns> Actual position on map </returns>
+        public async Task<Geoposition> GetActualLocationAsync()
         {
-            //await Common.Logger.WriteLogAsync($"Geolocator status changed from {sender.LocationStatus} to {args.Status}");
+            if (_locationFetchInterval != null)
+                return await _geolocator.GetGeopositionAsync(_locationFetchInterval, _getPositionTimeout);
+            else
+                return await _geolocator.GetGeopositionAsync();
         }
 
         private void PositionChangedHandler(Geolocator sender, PositionChangedEventArgs args)
         {
+        }
+
+        private void StatusChangedHandler(Geolocator sender, StatusChangedEventArgs args)
+        {
+            //await Common.Logger.WriteLogAsync($"Geolocator status changed from {sender.LocationStatus} to {args.Status}");
         }
     }
 }

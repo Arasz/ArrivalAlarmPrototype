@@ -17,19 +17,22 @@ namespace ArrivalAlarm.ViewModel
 {
     public class MapViewModel : ViewModelBase, INavigable
     {
-        /// <summary>
-        /// Navigation service used for navigation between pages
-        /// </summary>
-        private INavigationService _navigationService;
-
-        private MapModel _model;
-
-        private string _selectedLocation;
+        private readonly ObservableCollection<string> _foundLocations = new ObservableCollection<string>();
 
         private Geopoint _actualLocation;
 
+        private MapModel _model;
+
         /// <summary>
-        /// Actual user location on map
+        /// Navigation service used for navigation between pages 
+        /// </summary>
+        private INavigationService _navigationService;
+
+        private bool _pushpinVisible;
+        private string _selectedLocation;
+
+        /// <summary>
+        /// Actual user location on map 
         /// </summary>
         public Geopoint ActualLocation
         {
@@ -38,31 +41,41 @@ namespace ArrivalAlarm.ViewModel
         }
 
         /// <summary>
-        /// Map zoom level (from 1 to 20 )
-        /// </summary>
-        public double ZoomLevel
-        {
-            get; private set;
-        }
-
-        /// <summary>
-        /// Text from auto suggest box
+        /// Text from auto suggest box 
         /// </summary>
         public string AutoSuggestBoxText { get; set; } = "";
 
-        private readonly ObservableCollection<string> _foundLocations = new ObservableCollection<string>();
+        /// <summary>
+        /// Command launched when user wants update of his current location 
+        /// </summary>
+        public ICommand FindMeCommand { get; private set; }
 
         public INotifyCollectionChanged FoundLocations
         {
             get { return _foundLocations; }
         }
 
-        private bool _pushpinVisible;
-
         public bool PushpinVisible
         {
             get { return _pushpinVisible; }
             private set { Set(nameof(PushpinVisible), ref _pushpinVisible, value); }
+        }
+
+        /// <summary>
+        /// </summary>
+        public ICommand SuggestionChosenCommand { get; private set; }
+
+        /// <summary>
+        /// Command launched when user clicked combo box 
+        /// </summary>
+        public ICommand TextChangeCommand { get; private set; }
+
+        /// <summary>
+        /// Map zoom level (from 1 to 20 ) 
+        /// </summary>
+        public double ZoomLevel
+        {
+            get; private set;
         }
 
         public MapViewModel()
@@ -73,16 +86,36 @@ namespace ArrivalAlarm.ViewModel
             CreateCommands();
         }
 
-        /// <summary>
-        /// Updates actual user location
-        /// </summary>
-        private async void UpdateUserLocation()
+        public void GoBack()
         {
-            var actualLocation = await _model.GetActualLocationAsync();
-            ActualLocation = actualLocation.Coordinate.Point;
-            ZoomLevel = 12;
-            Messenger.Default.Send(ActualLocation, Messages.Tokens.MapViewToken);
-            PushpinVisible = true;
+            _navigationService.GoBack();
+        }
+
+        public void OnNavigatedFrom(object parameter)
+        {
+            //MyProperty = (parameter as string) ?? string.Empty;
+        }
+
+        public void OnNavigatedTo(object parameter)
+        {
+            UpdateUserLocation();
+        }
+
+        /// <summary>
+        /// Creates all commands 
+        /// </summary>
+        private void CreateCommands()
+        {
+            FindMeCommand = new RelayCommand(UpdateUserLocation);
+            TextChangeCommand = new RelayCommand<bool>(TextChangedCommandExecute);
+            SuggestionChosenCommand = new RelayCommand<object>(SuggestionChosenExecute);
+        }
+
+        private string GetReadableName(MapLocation location)
+        {
+            var address = location.Address;
+
+            return $"{address.Town} {address.Street} {address.StreetNumber}";
         }
 
         private void SetProvidedLocation(MapLocation location)
@@ -96,27 +129,15 @@ namespace ArrivalAlarm.ViewModel
             PushpinVisible = true;
         }
 
-        #region Commands
-
-        /// <summary>
-        /// Creates all commands
-        /// </summary>
-        private void CreateCommands()
+        private async void SuggestionChosenExecute(object selectedItem)
         {
-            FindMeCommand = new RelayCommand(UpdateUserLocation);
-            TextChangeCommand = new RelayCommand<bool>(TextChangedCommandExecute);
-            SuggestionChosenCommand = new RelayCommand<object>(SuggestionChosenExecute);
+            if (selectedItem == null)
+                return;
+
+            _selectedLocation = (string)selectedItem;
+            var locations = await _model.FindLocationAsync(_selectedLocation).ConfigureAwait(true);
+            SetProvidedLocation(locations.First());
         }
-
-        /// <summary>
-        /// Command launched when user wants update of his current location
-        /// </summary>
-        public ICommand FindMeCommand { get; private set; }
-
-        /// <summary>
-        /// Command launched when user clicked combo box
-        /// </summary>
-        public ICommand TextChangeCommand { get; private set; }
 
         private async void TextChangedCommandExecute(bool isUserInputReason)
         {
@@ -138,46 +159,16 @@ namespace ArrivalAlarm.ViewModel
             }
         }
 
-        private string GetReadableName(MapLocation location)
-        {
-            var address = location.Address;
-
-            return $"{address.Town} {address.Street} {address.StreetNumber}";
-        }
-
         /// <summary>
+        /// Updates actual user location 
         /// </summary>
-        public ICommand SuggestionChosenCommand { get; private set; }
-
-        private async void SuggestionChosenExecute(object selectedItem)
+        private async void UpdateUserLocation()
         {
-            if (selectedItem == null)
-                return;
-
-            _selectedLocation = (string)selectedItem;
-            var locations = await _model.FindLocationAsync(_selectedLocation).ConfigureAwait(true);
-            SetProvidedLocation(locations.First());
+            var actualLocation = await _model.GetActualLocationAsync();
+            ActualLocation = actualLocation.Coordinate.Point;
+            ZoomLevel = 12;
+            Messenger.Default.Send(ActualLocation, Messages.Tokens.MapViewToken);
+            PushpinVisible = true;
         }
-
-        #endregion Commands
-
-        #region INavigable
-
-        public void OnNavigatedFrom(object parameter)
-        {
-            //MyProperty = (parameter as string) ?? string.Empty;
-        }
-
-        public void GoBack()
-        {
-            _navigationService.GoBack();
-        }
-
-        public void OnNavigatedTo(object parameter)
-        {
-            UpdateUserLocation();
-        }
-
-        #endregion INavigable
     }
 }

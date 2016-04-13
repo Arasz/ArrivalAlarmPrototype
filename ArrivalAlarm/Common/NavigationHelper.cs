@@ -7,19 +7,18 @@ using Windows.UI.Xaml.Navigation;
 namespace ArrivalAlarm.Common
 {
     /// <summary>
-    /// NavigationHelper aids in navigation between pages.  It provides commands used to
-    /// navigate back and forward as well as registers for standard mouse and keyboard
-    /// shortcuts used to go back and forward in Windows and the hardware back button in
-    /// Windows Phone.  In addition it integrates SuspensionManger to handle process lifetime
-    /// management and state management when navigating between pages.
+    /// NavigationHelper aids in navigation between pages. It provides commands used to navigate back
+    /// and forward as well as registers for standard mouse and keyboard shortcuts used to go back
+    /// and forward in Windows and the hardware back button in Windows Phone. In addition it
+    /// integrates SuspensionManger to handle process lifetime management and state management when
+    /// navigating between pages.
     /// </summary>
     /// <example>
-    /// To make use of NavigationHelper, follow these two steps or
-    /// start with a BasicPage or any other Page item template other than BlankPage.
+    /// To make use of NavigationHelper, follow these two steps or start with a BasicPage or any
+    /// other Page item template other than BlankPage.
     ///
-    /// 1) Create an instance of the NavigationHelper somewhere such as in the
-    ///     constructor for the page and register a callback for the LoadState and
-    ///     SaveState events.
+    /// 1) Create an instance of the NavigationHelper somewhere such as in the constructor for the
+    ///    page and register a callback for the LoadState and SaveState events.
     /// <code>
     ///     public MyPage()
     ///     {
@@ -34,10 +33,9 @@ namespace ArrivalAlarm.Common
     ///     private async void navigationHelper_SaveState(object sender, LoadStateEventArgs e)
     ///     { }
     /// </code>
-    ///
-    /// 2) Register the page to call into the NavigationHelper whenever the page participates
-    ///     in navigation by overriding the <see cref="Windows.UI.Xaml.Controls.Page.OnNavigatedTo"/>
-    ///     and <see cref="Windows.UI.Xaml.Controls.Page.OnNavigatedFrom"/> events.
+    /// 2) Register the page to call into the NavigationHelper whenever the page participates in
+    ///    navigation by overriding the <see cref="Windows.UI.Xaml.Controls.Page.OnNavigatedTo"/> and
+    ///    <see cref="Windows.UI.Xaml.Controls.Page.OnNavigatedFrom"/> events.
     /// <code>
     ///     protected override void OnNavigatedTo(NavigationEventArgs e)
     ///     {
@@ -54,14 +52,17 @@ namespace ArrivalAlarm.Common
     public class NavigationHelper : DependencyObject
     {
         private Page Page { get; set; }
+
         private Frame Frame { get { return this.Page.Frame; } }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationHelper"/> class.
+        /// Initializes a new instance of the <see cref="NavigationHelper"/> class. 
         /// </summary>
-        /// <param name="page">A reference to the current page used for navigation.
-        /// This reference allows for frame manipulation and to ensure that keyboard
-        /// navigation requests only occur when the page is occupying the entire window.</param>
+        /// <param name="page">
+        /// A reference to the current page used for navigation. This reference allows for frame
+        /// manipulation and to ensure that keyboard navigation requests only occur when the page is
+        /// occupying the entire window.
+        /// </param>
         public NavigationHelper(Page page)
         {
             this.Page = page;
@@ -101,15 +102,13 @@ namespace ArrivalAlarm.Common
             };
         }
 
-        #region Navigation support
-
         private RelayCommand _goBackCommand;
         private RelayCommand _goForwardCommand;
 
         /// <summary>
-        /// <see cref="RelayCommand"/> used to bind to the back Button's Command property
-        /// for navigating to the most recent item in back navigation history, if a Frame
-        /// manages its own navigation history.
+        /// <see cref="RelayCommand"/> used to bind to the back Button's Command property for
+        /// navigating to the most recent item in back navigation history, if a Frame manages its own
+        /// navigation history.
         ///
         /// The <see cref="RelayCommand"/> is set up to use the virtual method <see cref="GoBack"/>
         /// as the Execute Action and <see cref="CanGoBack"/> for CanExecute.
@@ -133,11 +132,11 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// <see cref="RelayCommand"/> used for navigating to the most recent item in
-        /// the forward navigation history, if a Frame manages its own navigation history.
+        /// <see cref="RelayCommand"/> used for navigating to the most recent item in the forward
+        /// navigation history, if a Frame manages its own navigation history.
         ///
-        /// The <see cref="RelayCommand"/> is set up to use the virtual method <see cref="GoForward"/>
-        /// as the Execute Action and <see cref="CanGoForward"/> for CanExecute.
+        /// The <see cref="RelayCommand"/> is set up to use the virtual method
+        /// <see cref="GoForward"/> as the Execute Action and <see cref="CanGoForward"/> for CanExecute.
         /// </summary>
         public RelayCommand GoForwardCommand
         {
@@ -154,12 +153,11 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// Virtual method used by the <see cref="GoBackCommand"/> property
-        /// to determine if the <see cref="Frame"/> can go back.
+        /// Virtual method used by the <see cref="GoBackCommand"/> property to determine if the
+        /// <see cref="Frame"/> can go back.
         /// </summary>
         /// <returns>
-        /// true if the <see cref="Frame"/> has at least one entry
-        /// in the back navigation history.
+        /// true if the <see cref="Frame"/> has at least one entry in the back navigation history.
         /// </returns>
         public virtual bool CanGoBack()
         {
@@ -167,12 +165,11 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// Virtual method used by the <see cref="GoForwardCommand"/> property
-        /// to determine if the <see cref="Frame"/> can go forward.
+        /// Virtual method used by the <see cref="GoForwardCommand"/> property to determine if the
+        /// <see cref="Frame"/> can go forward.
         /// </summary>
         /// <returns>
-        /// true if the <see cref="Frame"/> has at least one entry
-        /// in the forward navigation history.
+        /// true if the <see cref="Frame"/> has at least one entry in the forward navigation history.
         /// </returns>
         public virtual bool CanGoForward()
         {
@@ -180,8 +177,8 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// Virtual method used by the <see cref="GoBackCommand"/> property
-        /// to invoke the <see cref="Windows.UI.Xaml.Controls.Frame.GoBack"/> method.
+        /// Virtual method used by the <see cref="GoBackCommand"/> property to invoke the
+        /// <see cref="Windows.UI.Xaml.Controls.Frame.GoBack"/> method.
         /// </summary>
         public virtual void GoBack()
         {
@@ -189,8 +186,8 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// Virtual method used by the <see cref="GoForwardCommand"/> property
-        /// to invoke the <see cref="Windows.UI.Xaml.Controls.Frame.GoForward"/> method.
+        /// Virtual method used by the <see cref="GoForwardCommand"/> property to invoke the
+        /// <see cref="Windows.UI.Xaml.Controls.Frame.GoForward"/> method.
         /// </summary>
         public virtual void GoForward()
         {
@@ -200,10 +197,10 @@ namespace ArrivalAlarm.Common
 #if WINDOWS_PHONE_APP
 
         /// <summary>
-        /// Invoked when the hardware back button is pressed. For Windows Phone only.
+        /// Invoked when the hardware back button is pressed. For Windows Phone only. 
         /// </summary>
-        /// <param name="sender">Instance that triggered the event.</param>
-        /// <param name="e">Event data describing the conditions that led to the event.</param>
+        /// <param name="sender"> Instance that triggered the event. </param>
+        /// <param name="e"> Event data describing the conditions that led to the event. </param>
         private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
         {
             if (this.GoBackCommand.CanExecute(null))
@@ -215,19 +212,18 @@ namespace ArrivalAlarm.Common
 
 #else
         /// <summary>
-        /// Invoked on every keystroke, including system keys such as Alt key combinations, when
-        /// this page is active and occupies the entire window.  Used to detect keyboard navigation
-        /// between pages even when the page itself doesn't have focus.
+        /// Invoked on every keystroke, including system keys such as Alt key combinations, when this
+        /// page is active and occupies the entire window. Used to detect keyboard navigation between
+        /// pages even when the page itself doesn't have focus.
         /// </summary>
-        /// <param name="sender">Instance that triggered the event.</param>
-        /// <param name="e">Event data describing the conditions that led to the event.</param>
+        /// <param name="sender"> Instance that triggered the event. </param>
+        /// <param name="e"> Event data describing the conditions that led to the event. </param>
         private void CoreDispatcher_AcceleratorKeyActivated(CoreDispatcher sender,
             AcceleratorKeyEventArgs e)
         {
             var virtualKey = e.VirtualKey;
 
-            // Only investigate further when Left, Right, or the dedicated Previous or Next keys
-            // are pressed
+            // Only investigate further when Left, Right, or the dedicated Previous or Next keys are pressed
             if ((e.EventType == CoreAcceleratorKeyEventType.SystemKeyDown ||
                 e.EventType == CoreAcceleratorKeyEventType.KeyDown) &&
                 (virtualKey == VirtualKey.Left || virtualKey == VirtualKey.Right ||
@@ -259,12 +255,12 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// Invoked on every mouse click, touch screen tap, or equivalent interaction when this
-        /// page is active and occupies the entire window.  Used to detect browser-style next and
-        /// previous mouse button clicks to navigate between pages.
+        /// Invoked on every mouse click, touch screen tap, or equivalent interaction when this page
+        /// is active and occupies the entire window. Used to detect browser-style next and previous
+        /// mouse button clicks to navigate between pages.
         /// </summary>
-        /// <param name="sender">Instance that triggered the event.</param>
-        /// <param name="e">Event data describing the conditions that led to the event.</param>
+        /// <param name="sender"> Instance that triggered the event. </param>
+        /// <param name="e"> Event data describing the conditions that led to the event. </param>
         private void CoreWindow_PointerPressed(CoreWindow sender,
             PointerEventArgs e)
         {
@@ -286,34 +282,29 @@ namespace ArrivalAlarm.Common
         }
 #endif
 
-        #endregion Navigation support
-
-        #region Process lifetime management
-
         private String _pageKey;
 
         /// <summary>
-        /// Register this event on the current page to populate the page
-        /// with content passed during navigation as well as any saved
-        /// state provided when recreating a page from a prior session.
+        /// Register this event on the current page to populate the page with content passed during
+        /// navigation as well as any saved state provided when recreating a page from a prior session.
         /// </summary>
         public event LoadStateEventHandler LoadState;
 
         /// <summary>
-        /// Register this event on the current page to preserve
-        /// state associated with the current page in case the
-        /// application is suspended or the page is discarded from
-        /// the navigaqtion cache.
+        /// Register this event on the current page to preserve state associated with the current
+        /// page in case the application is suspended or the page is discarded from the navigaqtion cache.
         /// </summary>
         public event SaveStateEventHandler SaveState;
 
         /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
-        /// This method calls <see cref="LoadState"/>, where all page specific
-        /// navigation and process lifetime management logic should be placed.
+        /// Invoked when this page is about to be displayed in a Frame. This method calls
+        /// <see cref="LoadState"/>, where all page specific navigation and process lifetime
+        /// management logic should be placed.
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.  The Parameter
-        /// property provides the group to be displayed.</param>
+        /// <param name="e">
+        /// Event data that describes how this page was reached. The Parameter property provides the
+        /// group to be displayed.
+        /// </param>
         public void OnNavigatedTo(NavigationEventArgs e)
         {
             var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
@@ -339,9 +330,8 @@ namespace ArrivalAlarm.Common
             }
             else
             {
-                // Pass the navigation parameter and preserved page state to the page, using
-                // the same strategy for loading suspended state and recreating pages discarded
-                // from cache
+                // Pass the navigation parameter and preserved page state to the page, using the same
+                // strategy for loading suspended state and recreating pages discarded from cache
                 if (this.LoadState != null)
                 {
                     this.LoadState(this, new LoadStateEventArgs(e.Parameter, (Dictionary<String, Object>)frameState[this._pageKey]));
@@ -350,12 +340,14 @@ namespace ArrivalAlarm.Common
         }
 
         /// <summary>
-        /// Invoked when this page will no longer be displayed in a Frame.
-        /// This method calls <see cref="SaveState"/>, where all page specific
-        /// navigation and process lifetime management logic should be placed.
+        /// Invoked when this page will no longer be displayed in a Frame. This method calls
+        /// <see cref="SaveState"/>, where all page specific navigation and process lifetime
+        /// management logic should be placed.
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.  The Parameter
-        /// property provides the group to be displayed.</param>
+        /// <param name="e">
+        /// Event data that describes how this page was reached. The Parameter property provides the
+        /// group to be displayed.
+        /// </param>
         public void OnNavigatedFrom(NavigationEventArgs e)
         {
             var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
@@ -366,47 +358,45 @@ namespace ArrivalAlarm.Common
             }
             frameState[_pageKey] = pageState;
         }
-
-        #endregion Process lifetime management
     }
 
     /// <summary>
-    /// Represents the method that will handle the <see cref="NavigationHelper.LoadState"/>event
+    /// Represents the method that will handle the <see cref="NavigationHelper.LoadState"/> event 
     /// </summary>
     public delegate void LoadStateEventHandler(object sender, LoadStateEventArgs e);
 
     /// <summary>
-    /// Represents the method that will handle the <see cref="NavigationHelper.SaveState"/>event
+    /// Represents the method that will handle the <see cref="NavigationHelper.SaveState"/> event 
     /// </summary>
     public delegate void SaveStateEventHandler(object sender, SaveStateEventArgs e);
 
     /// <summary>
-    /// Class used to hold the event data required when a page attempts to load state.
+    /// Class used to hold the event data required when a page attempts to load state. 
     /// </summary>
     public class LoadStateEventArgs : EventArgs
     {
         /// <summary>
-        /// The parameter value passed to <see cref="Frame.Navigate(Type, Object)"/>
-        /// when this page was initially requested.
+        /// The parameter value passed to <see cref="Frame.Navigate(Type, Object)"/> when this page
+        /// was initially requested.
         /// </summary>
         public Object NavigationParameter { get; private set; }
 
         /// <summary>
-        /// A dictionary of state preserved by this page during an earlier
-        /// session.  This will be null the first time a page is visited.
+        /// A dictionary of state preserved by this page during an earlier session. This will be null
+        /// the first time a page is visited.
         /// </summary>
         public Dictionary<string, Object> PageState { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoadStateEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="LoadStateEventArgs"/> class. 
         /// </summary>
         /// <param name="navigationParameter">
-        /// The parameter value passed to <see cref="Frame.Navigate(Type, Object)"/>
-        /// when this page was initially requested.
+        /// The parameter value passed to <see cref="Frame.Navigate(Type, Object)"/> when this page
+        /// was initially requested.
         /// </param>
         /// <param name="pageState">
-        /// A dictionary of state preserved by this page during an earlier
-        /// session.  This will be null the first time a page is visited.
+        /// A dictionary of state preserved by this page during an earlier session. This will be null
+        /// the first time a page is visited.
         /// </param>
         public LoadStateEventArgs(Object navigationParameter, Dictionary<string, Object> pageState)
             : base()
@@ -417,19 +407,19 @@ namespace ArrivalAlarm.Common
     }
 
     /// <summary>
-    /// Class used to hold the event data required when a page attempts to save state.
+    /// Class used to hold the event data required when a page attempts to save state. 
     /// </summary>
     public class SaveStateEventArgs : EventArgs
     {
         /// <summary>
-        /// An empty dictionary to be populated with serializable state.
+        /// An empty dictionary to be populated with serializable state. 
         /// </summary>
         public Dictionary<string, Object> PageState { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SaveStateEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="SaveStateEventArgs"/> class. 
         /// </summary>
-        /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
+        /// <param name="pageState"> An empty dictionary to be populated with serializable state. </param>
         public SaveStateEventArgs(Dictionary<string, Object> pageState)
             : base()
         {

@@ -13,21 +13,15 @@ using Windows.Devices.Geolocation;
 namespace ArrivalAlarm.ViewModel
 {
     /// <summary>
-    /// This class contains properties that the main View can data bind to.
+    /// This class contains properties that the main View can data bind to. 
     /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
+    /// Use the <strong> mvvminpc </strong> snippet to add bindable properties to this ViewModel.
     /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
+    /// <para> You can also use Blend to data bind with the tool's support. </para>
+    /// <para> See http://www.galasoft.ch/mvvm </para>
     /// </summary>
     public class MainViewModel : ViewModelBase, INavigable
     {
-        private INavigationService _navigationService;
-
         private readonly ObservableCollection<AlarmModel> _alarmsCollection = new ObservableCollection<AlarmModel>()
         {
             new AlarmModel(new AlarmLocation("Poznan", new BasicGeoposition()))
@@ -47,10 +41,17 @@ namespace ArrivalAlarm.ViewModel
             },
         };
 
+        private RelayCommand _navigateToSelectLocationPage;
+        private INavigationService _navigationService;
         public INotifyCollectionChanged AlarmsCollection => _alarmsCollection;
 
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
+        /// Returns command which navigates to selection page 
+        /// </summary>
+        public ICommand NavigateToSelectLocationPage => _navigateToSelectLocationPage;
+
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class. 
         /// </summary>
         public MainViewModel()
         {
@@ -59,16 +60,18 @@ namespace ArrivalAlarm.ViewModel
             CreateNavigateToSelectLocationPageCommand();
         }
 
-        /// <summary>
-        /// Returns command which navigates to selection page
-        /// </summary>
-        public ICommand NavigateToSelectLocationPage => _navigateToSelectLocationPage;
-
-        private RelayCommand _navigateToSelectLocationPage;
-
-        private void ExecuteNavigateToLocationPage()
+        public void GoBack()
         {
-            _navigationService.NavigateTo(nameof(View.MapPage), "Graf acykliczny - mo¿e byæ reprezentowany jako drzewo.");
+            _navigationService.GoBack();
+        }
+
+        public void OnNavigatedFrom(object parameter)
+        {
+        }
+
+        public void OnNavigatedTo(object parameter)
+        {
+            //Common.Logger.CreateLoggerAsync();
         }
 
         private void CreateNavigateToSelectLocationPageCommand()
@@ -76,22 +79,9 @@ namespace ArrivalAlarm.ViewModel
             _navigateToSelectLocationPage = new RelayCommand(ExecuteNavigateToLocationPage);
         }
 
-        #region INavigable
-
-        public void OnNavigatedTo(object parameter)
+        private void ExecuteNavigateToLocationPage()
         {
-            //Common.Logger.CreateLoggerAsync();
+            _navigationService.NavigateTo(nameof(View.MapPage), "Graf acykliczny - mo¿e byæ reprezentowany jako drzewo.");
         }
-
-        public void OnNavigatedFrom(object parameter)
-        {
-        }
-
-        public void GoBack()
-        {
-            _navigationService.GoBack();
-        }
-
-        #endregion INavigable
     }
 }

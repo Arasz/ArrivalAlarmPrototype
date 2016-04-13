@@ -6,11 +6,6 @@
     xmlns:model="using:ArrivalAlarm.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:system="using:System"
     mc:Ignorable="d"
     d:DesignHeight="180"
     d:DesignWidth="400"
@@ -25,7 +20,7 @@
     <Grid x:Name="rootLayout">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth ="200" Width="2*" />
+            <ColumnDefinition MinWidth="200" Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -39,27 +34,26 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Margin="5, 5">
             <TextBlock Text="{Binding Path=Label}" FontSize="20" Style="{ThemeResource GroupHeaderTextBlockStyle}"
-                 HorizontalAlignment="Left" Foreground="LightGray">
-            </TextBlock>
+                       HorizontalAlignment="Left" Foreground="LightGray" />
         </StackPanel>
 
-        <ToggleSwitch Grid.Row="0"   OffContent="" OnContent="" Margin="0, 5, 0, 0"
+        <ToggleSwitch Grid.Row="0" OffContent="" OnContent="" Margin="0, 5, 0, 0"
                       HorizontalAlignment="Right" VerticalAlignment="Center"
                       Grid.Column="1" />
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0"  Margin="15, 0">
-            <SymbolIcon  Symbol="Globe" Margin="0,0,10,0" />
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="15, 0">
+            <SymbolIcon Symbol="Globe" Margin="0,0,10,0" />
             <TextBlock Text="{Binding Path=AlarmLocation.Name}" Style="{ThemeResource BaseTextBlockStyle}"
-                   HorizontalAlignment="Left" VerticalAlignment="Center" />
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
         </StackPanel>
         <TextBlock Style="{ThemeResource BaseTextBlockStyle}"
-                   Grid.Row="1" Grid.Column="1"  Margin="5, 0"
+                   Grid.Row="1" Grid.Column="1" Margin="5, 0"
                    HorizontalAlignment="Right" VerticalAlignment="Center">
             <Run Text="{Binding Path=AlarmLocation.Radius}" />
             <Run>Km</Run>
         </TextBlock>
 
-        <StackPanel Orientation="Horizontal"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                     Margin="15,5">
             <SymbolIcon Symbol="Calendar" Margin="0,0,10,0" />
             <ItemsControl ItemsSource="{Binding Path=ActiveDays}" VerticalAlignment="Center"
@@ -75,10 +69,10 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource BaseTextBlockStyle}">
-                            <Span>
-                                <Span></Span>
-                                <Run Text="{Binding Converter={StaticResource LongDayStringToShortConverter}}"></Run>
-                            </Span>
+                                <Span>
+                                    <Span />
+                                    <Run Text="{Binding Converter={StaticResource LongDayStringToShortConverter}}" />
+                                </Span>
                             </TextBlock>
                         </StackPanel>
                     </DataTemplate>
@@ -86,8 +80,8 @@
             </ItemsControl>
         </StackPanel>
 
-        <Line Stretch="Uniform" Stroke="White" StrokeThickness="1" Height="10"  HorizontalAlignment="Stretch"
-               VerticalAlignment="Bottom" X1="0" Y1="0" X2="1000"  Y2="0"
-               Visibility="Visible" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Line Stretch="Uniform" Stroke="White" StrokeThickness="1" Height="10" HorizontalAlignment="Stretch"
+              VerticalAlignment="Bottom" X1="0" Y1="0" X2="1000" Y2="0"
+              Visibility="Visible" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>

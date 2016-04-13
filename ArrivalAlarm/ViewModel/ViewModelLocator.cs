@@ -19,13 +19,17 @@ using Microsoft.Practices.ServiceLocation;
 namespace ArrivalAlarm.ViewModel
 {
     /// <summary>
-    /// This class contains static references to all the view models in the
-    /// application and provides an entry point for the bindings.
+    /// This class contains static references to all the view models in the application and provides
+    /// an entry point for the bindings.
     /// </summary>
     public class ViewModelLocator
     {
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        public MapViewModel Map => ServiceLocator.Current.GetInstance<MapViewModel>();
+
         /// <summary>
-        /// Initializes a new instance of the ViewModelLocator class.
+        /// Initializes a new instance of the ViewModelLocator class. 
         /// </summary>
         public ViewModelLocator()
         {
@@ -37,17 +41,13 @@ namespace ArrivalAlarm.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-
-        public MapViewModel Map => ServiceLocator.Current.GetInstance<MapViewModel>();
-
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
         }
 
         /// <summary>
-        /// Creates and configures instance of navigation service
+        /// Creates and configures instance of navigation service 
         /// </summary>
         private void ConfigureNavigationService()
         {
